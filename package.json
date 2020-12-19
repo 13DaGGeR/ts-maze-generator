@@ -1,0 +1,13 @@
+{
+  "name": "maze",
+  "version": "1.0.0",
+  "main": "src/main.ts",
+  "license": "MIT",
+  "author": "13dagger",
+  "private": false,
+  "dependencies": {
+    "source-map-loader": "^1.1.3",
+    "ts-loader": "^8.0.12",
+    "webpack": "^5.11.0"
+  }
+}
