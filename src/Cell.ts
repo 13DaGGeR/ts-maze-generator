@@ -11,7 +11,7 @@ export class Cell {
 		this.coordinate = new Coordinate(x, y);
 	}
 
-	addPath(p: string): void {
+	public addPath(p: string): void {
 		if (Direction.directions.indexOf(p) === -1) {
 			throw new Error('Wrong direction provided');
 		}
@@ -21,15 +21,15 @@ export class Cell {
 		}
 	}
 
-	hasPath(p: string): boolean {
+	public hasPath(p: string): boolean {
 		return this.paths.indexOf(p) !== -1;
 	}
 
-	hasAnyPaths(): boolean {
+	public hasAnyPaths(): boolean {
 		return this.paths.length > 0;
 	}
 
-	addBorder(p: string): void {
+	public addBorder(p: string): void {
 		if (Direction.directions.indexOf(p) === -1) {
 			throw new Error('Wrong direction provided');
 		}
@@ -39,7 +39,11 @@ export class Cell {
 		}
 	}
 
-	hasBorder(p: string): boolean {
+	public hasBorder(p: string): boolean {
 		return this.borders.indexOf(p) !== -1;
+	}
+
+	public getBorders(): string[] {
+		return this.borders;
 	}
 }

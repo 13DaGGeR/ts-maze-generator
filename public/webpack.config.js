@@ -1,15 +1,14 @@
 module.exports = {
     entry: "./src/main.ts",
     output: {
-        filename: "./dist/main.js",
+        filename: "./main.js",
     },
 
-    // Enable sourcemaps for debugging webpack's output.
-    devtool: "source-map",
+    mode: "development",
+    // devtool: "source-map",
 
     resolve: {
-        // Add '.ts' and '.tsx' as resolvable extensions.
-        extensions: ["", ".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
+        extensions: [".webpack.js", ".web.js", ".ts", ".tsx", ".js"],
     },
 
     module: {

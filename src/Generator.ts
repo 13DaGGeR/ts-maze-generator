@@ -3,18 +3,20 @@ import {Cell} from "./Cell";
 import {Direction} from "./Direction";
 
 export class Generator {
+	protected field: Field;
 	protected start: Cell;
 	protected finish: Cell;
-	protected processed: Cell[] = [];
-	protected parentPerCell: Map<Cell, Cell> = new Map<Cell, Cell>();
 	protected cellsWithPossiblePaths: Cell[] = [];
 
-	constructor(protected field: Field) {
+	constructor(width: number, height: number) {
+		this.field = new Field(width, height);
+		this.initStartAndFinish();
 	}
 
-	public generate(): void {
-		this.initStartAndFinish();
+	public generate(): Field {
 		this.createPath(this.start);
+		this.addPathsToStartAndFinish();
+		return this.field;
 	}
 
 	protected createPath(c: Cell): void {
@@ -73,8 +75,17 @@ export class Generator {
 		} while (startKey === finishKey);
 		this.start = bordered[startKey];
 		this.finish = bordered[finishKey];
+	}
 
-		console.log('from ', this.start.coordinate.asString(), 'to', this.finish.coordinate.asString());
+	private addPathsToStartAndFinish() {
+		for (let dir of Direction.directions) {
+			if (this.start.hasBorder(dir)) {
+				this.start.addPath(dir);
+			}
+			if (this.finish.hasBorder(dir)) {
+				this.finish.addPath(dir);
+			}
+		}
 	}
 
 	protected getPossiblePathDirections(c: Cell): string[] {
