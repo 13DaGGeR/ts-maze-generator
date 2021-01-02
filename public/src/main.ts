@@ -2,9 +2,10 @@ import {Generator} from "../../src/Generator";
 import {Direction} from "../../src/Direction";
 
 document.addEventListener("DOMContentLoaded", () => {
-	let params = new URLSearchParams(window.location.toString());
-	const width = parseInt(params.get('width') || '15');
-	const height = parseInt(params.get('height') || '7');
+	const url = new URL(window.location.toString());
+	const params = new URLSearchParams(url.search);
+	const width = parseInt(params.get('width') || '30');
+	const height = parseInt(params.get('height') || '15');
 	drawForm(width, height);
 	generate(width, height);
 });
@@ -38,6 +39,18 @@ function generate(width: number, height: number) {
 			td.style.borderRight = cell.hasPath(Direction.dirRight) ? 'none' : cellBorderStyle;
 			td.style.borderBottom = cell.hasPath(Direction.dirDown) ? 'none' : cellBorderStyle;
 			td.style.borderLeft = cell.hasPath(Direction.dirLeft) ? 'none' : cellBorderStyle;
+			td.style.textAlign = 'center';
+			td.style.verticalAlign = 'center';
+
+			// debug
+			if (cell === generator.start) {
+				td.innerText = 's';
+			} else if (cell === generator.finish) {
+				td.innerText = 'f';
+			} else {
+				//td.innerText = '';
+			}
+
 			tr.appendChild(td);
 		}
 		table.appendChild(tr);
