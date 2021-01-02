@@ -1,3 +1,5 @@
+import {Coordinate} from "./Coordinate";
+
 export class Direction {
 	static get dirUp(): string {
 		return '↑';
@@ -55,5 +57,14 @@ export class Direction {
 		}
 
 		throw new Error('wrong direction');
+	}
+
+	static getVectorDirection(from: Coordinate, to: Coordinate): string {
+		const verticalDistance = from.y - to.y,
+			horizontalDistance = from.x - to.x;
+		if (Math.abs(verticalDistance) > Math.abs(horizontalDistance)) {
+			return verticalDistance > 0 ? Direction.dirUp : Direction.dirDown;
+		}
+		return  horizontalDistance > 0 ? Direction.dirLeft : Direction.dirRight;
 	}
 }

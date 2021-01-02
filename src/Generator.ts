@@ -1,11 +1,12 @@
 import {Field} from "./Field";
 import {Cell} from "./Cell";
 import {Direction} from "./Direction";
+import {Coordinate} from "./Coordinate";
 
 export class Generator {
 	protected field: Field;
-	protected start: Cell;
-	protected finish: Cell;
+	public start: Cell;
+	public finish: Cell;
 	protected cellsWithPossiblePaths: Cell[] = [];
 
 	constructor(width: number, height: number) {
@@ -33,7 +34,7 @@ export class Generator {
 		}
 
 		if (dirs.length > 0) {
-			let dir = dirs[Math.floor(Math.random() * dirs.length)];
+			let dir = this.getNextStep(dirs, c.coordinate);
 			const next = this.field.addPath(c.coordinate.x, c.coordinate.y, dir);
 			if (dirs.length === 1) { // cell has no more paths left
 				this.removeCellFromPossiblePathsStarts(c);
@@ -45,6 +46,17 @@ export class Generator {
 
 		this.removeCellFromPossiblePathsStarts(c);
 		this.createNewBranch();
+	}
+
+	private getNextStep(dirs: string[], c: Coordinate): string {
+		const directionToFinish = Direction.getVectorDirection(c, this.finish.coordinate);
+		const oppositeDirection = Direction.getOpposite(directionToFinish);
+
+		if (dirs.indexOf(oppositeDirection) !== -1 && Math.random() > .5) {
+			return oppositeDirection;
+		}
+
+		return dirs[Math.floor(Math.random() * dirs.length)];
 	}
 
 	private removeCellFromPossiblePathsStarts(c: Cell) {
