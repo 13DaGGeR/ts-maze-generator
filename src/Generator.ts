@@ -103,20 +103,25 @@ export class Generator {
 	protected getPossiblePathDirections(c: Cell): string[] {
 		const result = [];
 		for (let direction of Direction.directions) {
-			if (c.hasPath(direction) || c.hasBorder(direction)) {
-				continue;
+			if (this.isPossibleDirection(c, direction)) {
+				result.push(direction);
 			}
-			let neighbour = this.field.getCell(
-				Direction.getXWithOffset(c.coordinate.x, direction),
-				Direction.getYWithOffset(c.coordinate.y, direction)
-			);
-			if (neighbour.hasAnyPaths()) {
-				continue;
-			}
-
-			result.push(direction);
 		}
 
 		return result;
+	}
+
+	protected isPossibleDirection(c: Cell, direction: string): boolean {
+		if (c.hasPath(direction) || c.hasBorder(direction)) {
+			return false;
+		}
+		let neighbour = this.field.getCell(
+			Direction.getXWithOffset(c.coordinate.x, direction),
+			Direction.getYWithOffset(c.coordinate.y, direction)
+		);
+		if (neighbour.hasAnyPaths()) {
+			return false;
+		}
+		return true;
 	}
 }
