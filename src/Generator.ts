@@ -7,10 +7,13 @@ export class Generator {
 	protected field: Field;
 	public start: Cell;
 	public finish: Cell;
+	protected diagonal: number;
 	protected cellsWithPossiblePaths: Cell[] = [];
+	protected minStartToFinishPerDiagCoefficient = .5;
 
 	constructor(width: number, height: number) {
 		this.field = new Field(width, height);
+		this.diagonal = Math.floor(Math.sqrt(width ** 2 + height ** 2));
 		this.initStartAndFinish();
 	}
 
@@ -81,12 +84,25 @@ export class Generator {
 		}
 
 		const startKey: number = Math.floor(Math.random() * bordered.length);
-		let finishKey: number;
+		this.start = bordered[startKey];
+
+		console.log('start c: ', this.start.coordinate.asString());
+
+		let finishKey: number,
+			tries: number = 100;
+		const minDistance = this.minStartToFinishPerDiagCoefficient * this.diagonal;
 		do {
 			finishKey = Math.floor(Math.random() * bordered.length);
-		} while (startKey === finishKey);
-		this.start = bordered[startKey];
-		this.finish = bordered[finishKey];
+			this.finish = bordered[finishKey];
+			console.log('finish c: ', this.finish.coordinate.asString());
+			console.log('dist: ', this.start.coordinate.distanceTo(this.finish.coordinate));
+		} while (
+			--tries > 0
+			&& (
+				startKey === finishKey
+				|| this.start.coordinate.distanceTo(this.finish.coordinate) < minDistance
+			)
+		);
 	}
 
 	private addPathsToStartAndFinish() {
