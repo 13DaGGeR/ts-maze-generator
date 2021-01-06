@@ -27,15 +27,15 @@ export class Generator {
 			return;
 		}
 
-		const dirs = this.getPossiblePathDirections(c);
+		const dirs: string[] = this.getPossiblePathDirections(c);
 
 		if (dirs.length > 1) {
 			this.cellsWithPossiblePaths.push(c); // to fill later
 		}
 
 		if (dirs.length > 0) {
-			let dir = this.getNextStep(dirs, c.coordinate);
-			const next = this.field.addPath(c.coordinate.x, c.coordinate.y, dir);
+			let dir: string = this.getNextStep(dirs, c.coordinate);
+			const next: Cell = this.field.addPath(c.coordinate.x, c.coordinate.y, dir);
 			if (dirs.length === 1) { // cell has no more paths left
 				this.removeCellFromPossiblePathsStarts(c);
 			}
@@ -49,8 +49,8 @@ export class Generator {
 	}
 
 	private getNextStep(dirs: string[], c: Coordinate): string {
-		const directionToFinish = Direction.getVectorDirection(c, this.finish.coordinate);
-		const oppositeDirection = Direction.getOpposite(directionToFinish);
+		const directionToFinish: string = Direction.getVectorDirection(c, this.finish.coordinate);
+		const oppositeDirection: string = Direction.getOpposite(directionToFinish);
 
 		if (dirs.indexOf(oppositeDirection) !== -1 && Math.random() > .5) {
 			return oppositeDirection;
@@ -60,7 +60,7 @@ export class Generator {
 	}
 
 	private removeCellFromPossiblePathsStarts(c: Cell) {
-		const index = this.cellsWithPossiblePaths.indexOf(c);
+		const index: number = this.cellsWithPossiblePaths.indexOf(c);
 		if (index !== -1) {
 			this.cellsWithPossiblePaths.splice(index, 1);
 		}
@@ -80,8 +80,8 @@ export class Generator {
 			return;
 		}
 
-		const startKey = Math.floor(Math.random() * bordered.length);
-		let finishKey;
+		const startKey: number = Math.floor(Math.random() * bordered.length);
+		let finishKey: number;
 		do {
 			finishKey = Math.floor(Math.random() * bordered.length);
 		} while (startKey === finishKey);
@@ -101,7 +101,7 @@ export class Generator {
 	}
 
 	protected getPossiblePathDirections(c: Cell): string[] {
-		const result = [];
+		const result: string[] = [];
 		for (let direction of Direction.directions) {
 			if (this.isPossibleDirection(c, direction)) {
 				result.push(direction);
@@ -115,7 +115,7 @@ export class Generator {
 		if (c.hasPath(direction) || c.hasBorder(direction)) {
 			return false;
 		}
-		let neighbour = this.field.getCell(
+		let neighbour: Cell = this.field.getCell(
 			Direction.getXWithOffset(c.coordinate.x, direction),
 			Direction.getYWithOffset(c.coordinate.y, direction)
 		);

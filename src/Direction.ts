@@ -60,7 +60,7 @@ export class Direction {
 	}
 
 	static getVectorDirection(from: Coordinate, to: Coordinate): string {
-		const verticalDistance = from.y - to.y,
+		const verticalDistance: number = from.y - to.y,
 			horizontalDistance = from.x - to.x;
 		if (Math.abs(verticalDistance) > Math.abs(horizontalDistance)) {
 			return verticalDistance > 0 ? Direction.dirUp : Direction.dirDown;

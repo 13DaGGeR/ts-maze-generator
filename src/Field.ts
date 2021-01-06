@@ -11,17 +11,17 @@ export class Field {
 			throw new Error('size is too small');
 		}
 
-		for (let x = 0; x < width; ++x) {
-			for (let y = 0; y < height; ++y) {
+		for (let x: number = 0; x < width; ++x) {
+			for (let y: number = 0; y < height; ++y) {
 				this.addCell(x, y);
 			}
 		}
 	}
 
 	public print() {
-		const buffer = [];
+		const buffer: string[] = [];
 		for (let cell of this.cells) {
-			let offset = cell.coordinate.y * this.width * 9 + cell.coordinate.x * 3;
+			let offset: number = cell.coordinate.y * this.width * 9 + cell.coordinate.x * 3;
 			buffer[offset + this.width * 3 + 1] = '0';
 
 			if (cell.hasPath(Direction.dirUp)) {
@@ -38,9 +38,9 @@ export class Field {
 			}
 		}
 
-		for (let y = 0; y < this.height * 3; ++y) {
+		for (let y: number = 0; y < this.height * 3; ++y) {
 			let row = '';
-			for (let x = 0; x < this.width * 3; ++x) {
+			for (let x: number = 0; x < this.width * 3; ++x) {
 				let val = buffer[y * this.width * 3 + x] || ' ';
 				row += ' ' + val + ' ';
 			}
@@ -53,10 +53,10 @@ export class Field {
 	}
 
 	protected addCell(x: number, y: number): Cell {
-		const cell = new Cell(x, y);
+		const cell: Cell = new Cell(x, y);
 		this.cells[this.coordinateToNumber(cell.coordinate)] = cell;
 
-		let isAtBorder = false;
+		let isAtBorder: boolean = false;
 		if (x === 0) {
 			cell.addBorder(Direction.dirLeft);
 			isAtBorder = true;
@@ -82,13 +82,13 @@ export class Field {
 	}
 
 	public getCell(x: number, y: number): Cell|null {
-		const coordinate = new Coordinate(x, y);
+		const coordinate: Coordinate = new Coordinate(x, y);
 		return this.cells[this.coordinateToNumber(coordinate)] || null;
 	}
 
 	public addPath(x: number, y: number, d: string): Cell|null {
-		const cell1 = this.getCell(x, y),
-			cell2 = this.getCell(Direction.getXWithOffset(x, d), Direction.getYWithOffset(y, d));
+		const cell1: Cell = this.getCell(x, y),
+			cell2: Cell = this.getCell(Direction.getXWithOffset(x, d), Direction.getYWithOffset(y, d));
 		if (cell1 === null) {
 			return;
 		}
