@@ -86,16 +86,12 @@ export class Generator {
 		const startKey: number = Math.floor(Math.random() * bordered.length);
 		this.start = bordered[startKey];
 
-		console.log('start c: ', this.start.coordinate.asString());
-
 		let finishKey: number,
 			tries: number = 100;
 		const minDistance = this.minStartToFinishPerDiagCoefficient * this.diagonal;
 		do {
 			finishKey = Math.floor(Math.random() * bordered.length);
 			this.finish = bordered[finishKey];
-			console.log('finish c: ', this.finish.coordinate.asString());
-			console.log('dist: ', this.start.coordinate.distanceTo(this.finish.coordinate));
 		} while (
 			--tries > 0
 			&& (
