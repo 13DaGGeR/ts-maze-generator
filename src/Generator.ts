@@ -99,6 +99,8 @@ export class Generator {
 				|| this.start.coordinate.distanceTo(this.finish.coordinate) < minDistance
 			)
 		);
+		this.start.isStart = true;
+		this.finish.isFinish = true;
 	}
 
 	private addPathsToStartAndFinish() {

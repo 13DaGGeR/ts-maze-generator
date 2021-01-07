@@ -3,8 +3,10 @@ import {Direction} from "./Direction";
 
 export class Cell {
 	public coordinate: Coordinate;
+	public isStart: boolean = false;
+	public isFinish: boolean = false;
 
-	public paths: string[] = [];
+	protected paths: string[] = [];
 	protected borders: string[] = [];
 
 	constructor(x: number, y: number) {

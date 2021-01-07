@@ -6,7 +6,7 @@ export class Field {
 	protected cells: Cell[] = [];
 	protected borderCells: Cell[] = [];
 
-	constructor(protected width: number = 10, protected height: number = 10) {
+	constructor(public readonly width: number = 10, public readonly height: number = 10) {
 		if (this.width * this.height < 2) {
 			throw new Error('size is too small');
 		}
