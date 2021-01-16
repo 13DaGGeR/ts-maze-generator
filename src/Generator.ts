@@ -4,7 +4,7 @@ import {Direction} from "./Direction";
 import {Coordinate} from "./Coordinate";
 
 export class Generator {
-	protected field: Field;
+	public readonly field: Field;
 	public start: Cell;
 	public finish: Cell;
 	protected diagonal: number;
@@ -14,10 +14,10 @@ export class Generator {
 	constructor(width: number, height: number) {
 		this.field = new Field(width, height);
 		this.diagonal = Math.floor(Math.sqrt(width ** 2 + height ** 2));
-		this.initStartAndFinish();
 	}
 
 	public generate(): Field {
+		this.initStartAndFinish();
 		this.createPath(this.start);
 		this.addPathsToStartAndFinish();
 		return this.field;
@@ -99,7 +99,7 @@ export class Generator {
 				|| this.start.coordinate.distanceTo(this.finish.coordinate) < minDistance
 			)
 		);
-		this.start.isStart = true;
+		this.start.isFinish = true;
 		this.finish.isFinish = true;
 	}
 

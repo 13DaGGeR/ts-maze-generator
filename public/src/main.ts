@@ -1,8 +1,6 @@
 import {Generator} from "../../src/Generator";
-import {Direction} from "../../src/Direction";
 import {ViewInterface} from "../../src/view/ViewInterface";
 import {TableView} from "../../src/view/TableView";
-import {Field} from "../../src/Field";
 
 document.addEventListener("DOMContentLoaded", () => {
 	const url = new URL(window.location.toString());
@@ -14,8 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
 	drawForm(width, height);
 
 	const generator = new Generator(width, height);
-	const field = generator.generate();
 	const view: ViewInterface = getView(viewType);
+	const field = generator.generate();
 	view.display(field);
 });
 

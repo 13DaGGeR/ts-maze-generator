@@ -21,10 +21,8 @@ export class TableView extends AbstractHtmlView implements ViewInterface {
 				td.style.verticalAlign = 'center';
 
 				// debug
-				if (cell.isStart) {
-					td.innerText = 's';
-				} else if (cell.isFinish) {
-					td.innerText = 'f';
+				if (cell.isFinish) {
+					td.innerText = '*';
 				} else {
 					//td.innerText = '';
 				}
