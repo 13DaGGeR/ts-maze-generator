@@ -1,6 +1,6 @@
 import {Cell} from "./Cell";
 import {Coordinate} from "./Coordinate";
-import {Direction} from "./Direction";
+import {Direction, DirectionHelper} from "./Direction";
 
 export class Field {
 	protected cells: Cell[] = [];
@@ -24,17 +24,17 @@ export class Field {
 			let offset: number = cell.coordinate.y * this.width * 9 + cell.coordinate.x * 3;
 			buffer[offset + this.width * 3 + 1] = '0';
 
-			if (cell.hasPath(Direction.dirUp)) {
-				buffer[offset + 1] = Direction.dirUp;
+			if (cell.hasPath(Direction.up)) {
+				buffer[offset + 1] = Direction.up;
 			}
-			if (cell.hasPath(Direction.dirRight)) {
-				buffer[offset + this.width * 3 + 2] = Direction.dirRight;
+			if (cell.hasPath(Direction.right)) {
+				buffer[offset + this.width * 3 + 2] = Direction.right;
 			}
-			if (cell.hasPath(Direction.dirDown)) {
-				buffer[offset + this.width * 3 * 2 + 1] = Direction.dirDown;
+			if (cell.hasPath(Direction.down)) {
+				buffer[offset + this.width * 3 * 2 + 1] = Direction.down;
 			}
-			if (cell.hasPath(Direction.dirLeft)) {
-				buffer[offset + this.width * 3] = Direction.dirLeft;
+			if (cell.hasPath(Direction.left)) {
+				buffer[offset + this.width * 3] = Direction.left;
 			}
 		}
 
@@ -58,19 +58,19 @@ export class Field {
 
 		let isAtBorder: boolean = false;
 		if (x === 0) {
-			cell.addBorder(Direction.dirLeft);
+			cell.addBorder(Direction.left);
 			isAtBorder = true;
 		}
 		if (x === this.width - 1) {
-			cell.addBorder(Direction.dirRight);
+			cell.addBorder(Direction.right);
 			isAtBorder = true;
 		}
 		if (y === 0) {
-			cell.addBorder(Direction.dirUp);
+			cell.addBorder(Direction.up);
 			isAtBorder = true;
 		}
 		if (y === this.height - 1) {
-			cell.addBorder(Direction.dirDown);
+			cell.addBorder(Direction.down);
 			isAtBorder = true;
 		}
 
@@ -86,16 +86,16 @@ export class Field {
 		return this.cells[this.coordinateToNumber(coordinate)] || null;
 	}
 
-	public addPath(x: number, y: number, d: string): Cell|null {
+	public addPath(x: number, y: number, d: Direction): Cell|null {
 		const cell1: Cell = this.getCell(x, y),
-			cell2: Cell = this.getCell(Direction.getXWithOffset(x, d), Direction.getYWithOffset(y, d));
+			cell2: Cell = this.getCell(DirectionHelper.getXWithOffset(x, d), DirectionHelper.getYWithOffset(y, d));
 		if (cell1 === null) {
 			return;
 		}
 
 		cell1.addPath(d);
 		if (cell2 !== null) {
-			cell2.addPath(Direction.getOpposite(d));
+			cell2.addPath(DirectionHelper.getOpposite(d));
 		}
 		return cell2;
 	}

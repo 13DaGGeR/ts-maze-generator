@@ -1,6 +1,6 @@
 import {Field} from "./Field";
 import {Cell} from "./Cell";
-import {Direction} from "./Direction";
+import {Direction, DirectionHelper} from "./Direction";
 import {Coordinate} from "./Coordinate";
 
 export class Generator {
@@ -30,14 +30,14 @@ export class Generator {
 			return;
 		}
 
-		const dirs: string[] = this.getPossiblePathDirections(c);
+		const dirs: Direction[] = this.getPossiblePathDirections(c);
 
 		if (dirs.length > 1) {
 			this.cellsWithPossiblePaths.push(c); // to fill later
 		}
 
 		if (dirs.length > 0) {
-			let dir: string = this.getNextStep(dirs, c.coordinate);
+			let dir: Direction = this.getNextStep(dirs, c.coordinate);
 			const next: Cell = this.field.addPath(c.coordinate.x, c.coordinate.y, dir);
 			if (dirs.length === 1) { // cell has no more paths left
 				this.removeCellFromPossiblePathsStarts(c);
@@ -51,9 +51,9 @@ export class Generator {
 		this.createNewBranch();
 	}
 
-	private getNextStep(dirs: string[], c: Coordinate): string {
-		const directionToFinish: string = Direction.getVectorDirection(c, this.finish.coordinate);
-		const oppositeDirection: string = Direction.getOpposite(directionToFinish);
+	private getNextStep(dirs: Direction[], c: Coordinate): Direction {
+		const directionToFinish: Direction = DirectionHelper.getVectorDirection(c, this.finish.coordinate);
+		const oppositeDirection: Direction = DirectionHelper.getOpposite(directionToFinish);
 
 		if (dirs.indexOf(oppositeDirection) !== -1 && Math.random() > .5) {
 			return oppositeDirection;
@@ -104,7 +104,7 @@ export class Generator {
 	}
 
 	private addPathsToStartAndFinish() {
-		for (let dir of Direction.directions) {
+		for (let dir of DirectionHelper.directions) {
 			if (this.start.hasBorder(dir)) {
 				this.start.addPath(dir);
 			}
@@ -114,9 +114,9 @@ export class Generator {
 		}
 	}
 
-	protected getPossiblePathDirections(c: Cell): string[] {
-		const result: string[] = [];
-		for (let direction of Direction.directions) {
+	protected getPossiblePathDirections(c: Cell): Direction[] {
+		const result: Direction[] = [];
+		for (let direction of DirectionHelper.directions) {
 			if (this.isPossibleDirection(c, direction)) {
 				result.push(direction);
 			}
@@ -125,17 +125,14 @@ export class Generator {
 		return result;
 	}
 
-	protected isPossibleDirection(c: Cell, direction: string): boolean {
+	protected isPossibleDirection(c: Cell, direction: Direction): boolean {
 		if (c.hasPath(direction) || c.hasBorder(direction)) {
 			return false;
 		}
 		let neighbour: Cell = this.field.getCell(
-			Direction.getXWithOffset(c.coordinate.x, direction),
-			Direction.getYWithOffset(c.coordinate.y, direction)
+			DirectionHelper.getXWithOffset(c.coordinate.x, direction),
+			DirectionHelper.getYWithOffset(c.coordinate.y, direction)
 		);
-		if (neighbour.hasAnyPaths()) {
-			return false;
-		}
-		return true;
+		return !neighbour.hasAnyPaths();
 	}
 }

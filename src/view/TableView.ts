@@ -13,10 +13,10 @@ export class TableView extends AbstractHtmlView implements ViewInterface {
 			for (let col = 0; col < field.width; ++col) {
 				let td = document.createElement('td');
 				let cell = field.getCell(col, row);
-				td.style.borderTop = cell.hasPath(Direction.dirUp) ? 'none' : cellBorderStyle;
-				td.style.borderRight = cell.hasPath(Direction.dirRight) ? 'none' : cellBorderStyle;
-				td.style.borderBottom = cell.hasPath(Direction.dirDown) ? 'none' : cellBorderStyle;
-				td.style.borderLeft = cell.hasPath(Direction.dirLeft) ? 'none' : cellBorderStyle;
+				td.style.borderTop = cell.hasPath(Direction.up) ? 'none' : cellBorderStyle;
+				td.style.borderRight = cell.hasPath(Direction.right) ? 'none' : cellBorderStyle;
+				td.style.borderBottom = cell.hasPath(Direction.down) ? 'none' : cellBorderStyle;
+				td.style.borderLeft = cell.hasPath(Direction.left) ? 'none' : cellBorderStyle;
 				td.style.textAlign = 'center';
 				td.style.verticalAlign = 'center';
 

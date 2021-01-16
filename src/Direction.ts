@@ -1,70 +1,61 @@
 import {Coordinate} from "./Coordinate";
 
-export class Direction {
-	static get dirUp(): string {
-		return '↑';
-	}
+export const enum Direction {
+	up = '↑',
+	right = '→',
+	down = '↓',
+	left = '←',
+}
 
-	static get dirRight(): string {
-		return '→';
-	}
-
-	static get dirDown(): string {
-		return '↓';
-	}
-
-	static get dirLeft(): string {
-		return '←';
-	}
-
-	static get directions(): string[] {
+export class DirectionHelper {
+	static get directions(): Direction[] {
 		return [
-			Direction.dirUp,
-			Direction.dirRight,
-			Direction.dirDown,
-			Direction.dirLeft,
+			Direction.up,
+			Direction.right,
+			Direction.down,
+			Direction.left,
 		];
 	}
 
-	static getXWithOffset(x: number, d: string) {
-		if (d === this.dirRight) {
+	static getXWithOffset(x: number, d: Direction): number {
+		if (d === Direction.right) {
 			return x + 1;
-		} else if (d === this.dirLeft) {
+		} else if (d === Direction.left) {
 			return x - 1;
 		}
 		return x;
 	}
 
-	static getYWithOffset(y: number, d: string) {
-		if (d === this.dirUp) {
+	static getYWithOffset(y: number, d: Direction): number {
+		if (d === Direction.up) {
 			return y - 1;
-		} else if (d === this.dirDown) {
+		} else if (d === Direction.down) {
 			return y + 1;
 		}
 		return y;
 	}
 
-	static getOpposite(d: string) {
+	static getOpposite(d: Direction): Direction {
 		switch (d) {
-			case this.dirDown:
-				return this.dirUp;
-			case this.dirUp:
-				return this.dirDown;
-			case this.dirLeft:
-				return this.dirRight;
-			case this.dirRight:
-				return this.dirLeft;
+			case Direction.down:
+				return Direction.up;
+			case Direction.up:
+				return Direction.down;
+			case Direction.left:
+				return Direction.right;
+			case Direction.right:
+				return Direction.left;
 		}
 
 		throw new Error('wrong direction');
 	}
 
-	static getVectorDirection(from: Coordinate, to: Coordinate): string {
+	static getVectorDirection(from: Coordinate, to: Coordinate): Direction {
 		const verticalDistance: number = from.y - to.y,
 			horizontalDistance = from.x - to.x;
 		if (Math.abs(verticalDistance) > Math.abs(horizontalDistance)) {
-			return verticalDistance > 0 ? Direction.dirUp : Direction.dirDown;
+			return verticalDistance > 0 ? Direction.up : Direction.down;
 		}
-		return  horizontalDistance > 0 ? Direction.dirLeft : Direction.dirRight;
+		return  horizontalDistance > 0 ? Direction.left : Direction.right;
 	}
 }
