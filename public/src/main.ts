@@ -1,6 +1,7 @@
 import {Generator} from "../../src/Generator";
 import {ViewInterface} from "../../src/view/ViewInterface";
 import {TableView} from "../../src/view/TableView";
+import {AStarSolver} from "../../src/Solvers/AStarSolver";
 
 document.addEventListener("DOMContentLoaded", () => {
 	const url = new URL(window.location.toString());
@@ -14,7 +15,13 @@ document.addEventListener("DOMContentLoaded", () => {
 	const generator = new Generator(width, height);
 	const view: ViewInterface = getView(viewType);
 	const field = generator.generate();
-	view.display(field);
+	view.display(field, []);
+
+	document.getElementById('solve').addEventListener('click', () => {
+		const solver = new AStarSolver();
+		let path = solver.solve(field);
+		view.display(field, path);
+	});
 });
 
 function getView(viewType: string): ViewInterface {
@@ -39,6 +46,7 @@ function drawForm(width: number, height: number) {
 			</label>
 			<br />
 			<button type="submit">Generate</button>
+			<button type="button" id="solve">Solve</button>
 		</form>
 	`;
 	document.body.innerHTML += form;

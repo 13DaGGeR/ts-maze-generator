@@ -4,7 +4,7 @@ import {AbstractHtmlView} from "./AbstractHtmlView";
 import {Direction} from "../Direction";
 
 export class TableView extends AbstractHtmlView implements ViewInterface {
-	display(field: Field): void {
+	display(field: Field, path: string[] = []): void {
 		const holder = this.generateAndGetMazeHolder();
 		const cellBorderStyle = '3px solid black';
 		const table = document.createElement('table');
@@ -24,7 +24,11 @@ export class TableView extends AbstractHtmlView implements ViewInterface {
 				if (cell.isFinish) {
 					td.innerText = '*';
 				} else {
-					//td.innerText = '';
+					// td.innerText = cell.coordinate.asString();
+				}
+
+				if (path.indexOf(cell.coordinate.asString()) !== -1) {
+					td.style.backgroundColor = '#eee';
 				}
 
 				tr.appendChild(td);

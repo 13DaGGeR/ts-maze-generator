@@ -3,6 +3,7 @@ module.exports = {
     output: {
         filename: "./main.js",
     },
+    watch: true,
 
     mode: "development",
     // devtool: "source-map",

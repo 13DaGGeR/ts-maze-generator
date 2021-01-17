@@ -14,5 +14,5 @@ export abstract class AbstractHtmlView implements ViewInterface {
 		return el;
 	}
 
-	abstract display(field: Field): void;
+	abstract display(field: Field, path: string[]): void;
 }

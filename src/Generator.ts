@@ -101,6 +101,9 @@ export class Generator {
 		);
 		this.start.isFinish = true;
 		this.finish.isFinish = true;
+
+		this.field.finishCells.push(this.start);
+		this.field.finishCells.push(this.finish);
 	}
 
 	private addPathsToStartAndFinish() {
