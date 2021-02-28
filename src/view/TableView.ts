@@ -36,8 +36,20 @@ export class TableView extends AbstractHtmlView implements ViewInterface {
 			table.appendChild(tr);
 		}
 
+		const style = document.createElement('style');
+		style.innerText = `
+			table {
+				border-collapse: collapse;
+			}
+			td {
+				width: 50px;
+				height: 50px;
+			}
+		`;
+
 		holder.innerHTML = '';
 		holder.appendChild(table);
+		holder.appendChild(style);
 	}
 }
 
