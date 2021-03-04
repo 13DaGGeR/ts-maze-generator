@@ -18,37 +18,49 @@ export class Generator {
 
 	public generate(): Field {
 		this.initStartAndFinish();
-		this.createPath(this.start);
+		this.createPath();
 		this.addPathsToStartAndFinish();
 		return this.field;
 	}
 
-	protected createPath(c: Cell): void {
-		if (c === this.finish) {
-			this.removeCellFromPossiblePathsStarts(c);
-			this.createNewBranch();
-			return;
-		}
+	protected createPath(): void {
+		let currentCell = this.start;
 
-		const dirs: Direction[] = this.getPossiblePathDirections(c);
-
-		if (dirs.length > 1) {
-			this.cellsWithPossiblePaths.push(c); // to fill later
-		}
-
-		if (dirs.length > 0) {
-			let dir: Direction = this.getNextStep(dirs, c.coordinate);
-			const next: Cell = this.field.addPath(c.coordinate.x, c.coordinate.y, dir);
-			if (dirs.length === 1) { // cell has no more paths left
-				this.removeCellFromPossiblePathsStarts(c);
+		while (currentCell !== null) {
+			if (currentCell === this.finish) {
+				this.removeCellFromPossiblePathsStarts(currentCell);
+				currentCell = this.getNextCellOrNull();
+				continue;
 			}
 
-			this.createPath(next);
-			return;
+			let dirs: Direction[] = this.getPossiblePathDirections(currentCell);
+
+			if (dirs.length > 1) {
+				this.cellsWithPossiblePaths.push(currentCell); // to fill later
+			}
+
+			if (dirs.length > 0) {
+				let dir: Direction = this.getNextStep(dirs, currentCell.coordinate);
+				const next: Cell = this.field.addPath(currentCell.coordinate.x, currentCell.coordinate.y, dir);
+				if (dirs.length === 1) { // cell has no more paths left
+					this.removeCellFromPossiblePathsStarts(currentCell);
+				}
+
+				currentCell = next;
+				continue;
+			}
+
+			this.removeCellFromPossiblePathsStarts(currentCell);
+			currentCell = this.getNextCellOrNull();
+		}
+	}
+
+	private getNextCellOrNull(): Cell|null {
+		if (this.cellsWithPossiblePaths.length === 0) { // all finished
+			return null;
 		}
 
-		this.removeCellFromPossiblePathsStarts(c);
-		this.createNewBranch();
+		return  this.cellsWithPossiblePaths[Math.floor(this.cellsWithPossiblePaths.length * Math.random())];
 	}
 
 	private getNextStep(dirs: Direction[], c: Coordinate): Direction {
@@ -67,14 +79,6 @@ export class Generator {
 		if (index !== -1) {
 			this.cellsWithPossiblePaths.splice(index, 1);
 		}
-	}
-
-	protected createNewBranch(): void {
-		if (this.cellsWithPossiblePaths.length === 0) { // all finished
-			return;
-		}
-
-		this.createPath(this.cellsWithPossiblePaths[Math.floor(this.cellsWithPossiblePaths.length * Math.random())])
 	}
 
 	protected initStartAndFinish() {
